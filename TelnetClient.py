@@ -16,7 +16,7 @@ class TelnetClient:
         try:
             self.tn.open(host_ip)
         except:
-            print('连接失败')
+            return "连接失败"
         self.tn.read_until(b'login: ')
         self.input(username)
         self.tn.read_until(b'Password: ')
