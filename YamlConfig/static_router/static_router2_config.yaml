@@ -1,0 +1,15 @@
+enable
+CISCO
+configure terminal
+int loopback0
+ip address 2.2.2.2 255.255.255.0
+int s0/0/0
+clock rate 128000
+ip address 192.168.12.2 255.255.255.0
+no shutdown
+int s0/0/1
+clock rate 128000
+ip address 192.168.23.2 255.255.255.0
+no shutdown
+end
+configure terminal
