@@ -2,9 +2,11 @@ from flask import Flask
 from flask import render_template
 from TelnetClient import TelnetClient
 from flask import request
+from YamlReader import YamlReader
 
 app = Flask(__name__)
 telnetClient = TelnetClient()
+yamlReader = YamlReader()
 
 @app.route("/")
 def test_page():
@@ -19,4 +21,9 @@ def telnet():
     msg = telnetClient.login(host_ip, username, password)
     return msg
 
+@app.route("/readYaml")
+def readYaml():
+    data = yamlReader.get_yaml("YamlConfig/test_config.yaml")
+    # data = yamlReader.get_yaml(file_data)
+    return data
 
