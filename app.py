@@ -56,6 +56,26 @@ def simpleExecuteRipConfig():
         print(data)
     return "success"
 
+@app.route("/simpleExecuteOspfConfig", methods=["POST"])
+def simpleExecuteOspfConfig():
+    data = None
+    msg = telnetClient.login("172.126.0.1", None, "CISCO")
+    data = yamlReader.get_yaml("YamlConfig/ospf/ospf_configA.yaml")
+    for lines in data:
+        data = telnetClient.exec_cmd(lines)
+        #print(data)
+    msg = telnetClient.login("172.126.0.2", None, "CISCO")
+    data = yamlReader.get_yaml("YamlConfig/ospf/ospf_configB.yaml")
+    for lines in data:
+        data = telnetClient.exec_cmd(lines)
+        #print(data)
+    msg = telnetClient.login("172.126.0.3", None, "CISCO")
+    data = yamlReader.get_yaml("YamlConfig/ospf/ospf_configC.yaml")
+    for lines in data:
+        data = telnetClient.exec_cmd(lines)
+        #print(data)
+    return "success"
+
 @app.route("/simpleExecuteStaticConfig", methods=["POST"])
 def simpleExecuteStaticConfig():
     data = None

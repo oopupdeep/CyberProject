@@ -1,0 +1,19 @@
+enable
+CISCO
+configure terminal
+int s0/0/0
+ip address 192.168.1.1 255.255.255.0
+no shutdown
+exit
+int s0/0/1
+ip address 192.168.2.1 255.255.255.0
+no shutdown
+exit
+int lo0
+ip address 172.24.1.1 255.255.255.0
+no shutdown
+exit
+router ospf 1
+network 172.126.0.1 0.0.0.255 area 0
+network 192.168.2.0 0.0.0.255 area 51
+network 172.126.0.2 0.0.0.255 area 0
