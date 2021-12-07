@@ -16,14 +16,100 @@
             border: 1px solid lightgray;
         }
 </style>
+<style type="text/css">
+        *{padding: 0;margin: 0;}
+        .menu{
+            /*这个样式不写，右键弹框会一直显示在画布的左下角*/
+            position: absolute;
+            background: rgba(3,3,3,0.6);
+            border-radius: 5px;
+            left: -99999px;
+            top: -999999px;
+        }
+        .menu ul{
+			list-style: none;
+		}
+        .menu ul li{
+            padding: 5px 10px;
+            color: #ffff;
+            border-bottom: 1px solid #ffffff;
+            font-size: 14px;
+            cursor: pointer;
+            list-style: none;
+        }
+        .menu ul li:hover{
+            color: #659bc5;
+        }
+        .menu ul li:last-child{
+           border-bottom: none;
+            padding: 5px 10px 0 10px;
+        }
+
+</style>
+
 <body>
 <div class="container-fluid ">
 	<div class="row">
 		<div class="col-md-6 column">
+
+			<!-- 拓扑图 -->
 			<div id="mynetwork"></div>
+
+			<!--菜单操作-->
+			<div id="menuOperation" class="menu" style="display: none;">
+			   <ul>
+					<li><span class="glyphicon glyphicon-off" aria-hidden="true"></span> 下线</li>
+					<li><span class="glyphicon glyphicon-road" aria-hidden="true"></span> 通行</li>
+			   </ul>
+			</div>
+
+			<!--节点悬停-->
+			<div class="menu" id="divHoverNode" style="display: none;">
+				<!--<ul></ul>-->
+			</div>
+
 		</div>
 		<div class="col-md-6 column">
-			<div style="height: 500px"></div>
+			<div style="height: 500px">
+				<div class="row"style="margin-top: 20px">
+					<div class="col-md-4 " >
+						<button class="btn-primary btn-lg" id="static_route">配置静态路由</button>
+					</div>
+					<div class="col-md-4 ">
+						<button class="btn-primary btn-lg" id="rip">配置RIP</button>
+					</div>
+					<div class="col-md-4 ">
+						<button class="btn-primary btn-lg" id="ospf">配置OSPF多域</button>
+					</div>
+				</div>
+				<div class="row">
+					<HR color=#337ab7 SIZE=2>
+				</div>
+				<div class="row">
+					<div class="col-md-2"></div>
+					<div class="col-md-8">
+						<div class="col-md-6">
+							<select class="form-control" id="select_yml">
+							  <option>静态路由</option>
+							  <option>RIP</option>
+							  <option>OSPF</option>
+							</select>
+						</div>
+						<div class="col-md-6">
+							<button class="btn-primary btn-lg" id="btn_ok" >确定</button>
+						</div>
+					</div>
+					<div class="col-md-2"></div>
+				</div>
+				<div class="row">
+					<HR color=#337ab7 SIZE=2>
+				</div>
+				<div class="row">
+					<textarea style="width: 100%;height: 400px">
+						...
+					</textarea>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -31,16 +117,57 @@
 
 
 <script type="text/javascript">
-	var nodes = new vis.DataSet([
-        { id: 1, label: "RTA",image:"../static/img/router.png" , shape: 'image'},
-        { id: 2, label: "RTB",image:"../static/img/router.png" , shape: 'image'},
-		{ id: 3, label: "RTC",image:"../static/img/router.png" , shape: 'image'}
-    ]);
+	//nodes 配置好路由后，三个路由器的信息组成的list， var nodes = list; 属性和值都可以自定义，edges也是一样
+	var nodes = [
+        {
+            "id": 0,
+            "name": "路由器A",
+			"label":"RTA",
+            "type": "router",
+            "ip":"102.168.1.1",
+			"S0/0/0":"192.168.12.0/24",
+            "port":"未知",
+            "ignore":"false",
+            "flag":"true"
+        }, {
+            "id": 1,
+            "name": "路由器B",
+			"label":"RTB",
+            "type": "router",
+            "ip":"192.168.1.12",
+			"S0/0/0":"192.168.12.1/24",
+            "port":"22",
+            "ignore":"true",
+            "flag":"true"
+        }, {
+            "id": 2,
+            "name": "路由器C",
+			"label":"RTC",
+            "type": "router",
+            "ip":"192.168.1.3",
+			"S0/0/0":"192.168.12.2/24",
+            "port":"33",
+            "ignore":"true",
+            "flag":"true"
+        }
+    ];
+
+	for (var i = 0;i < nodes.length;i++){
+        if (nodes[i].type == 'router'){
+            nodes[i].image = '../static/img/router.png';
+        }
+    }
+	//创建节点数组
+//	var nodes = new vis.DataSet([
+//        { id: 1, label: "RTA",image:"../static/img/router.png" , shape: 'image'},
+//        { id: 2, label: "RTB",image:"../static/img/router.png" , shape: 'image'},
+//		{ id: 3, label: "RTC",image:"../static/img/router.png" , shape: 'image'}
+//    ]);
 
     // 创建边数据数组
     var edges = new vis.DataSet([
-        { from: 1, to: 2},
-        { from: 2, to: 3 },
+        { from: 0, to: 1,id:"0->1"},
+        { from: 1, to: 2,id:"1->2"}
     ]);
 
     // 获取容器
@@ -51,17 +178,113 @@
         nodes: nodes,
         edges: edges
     };
-    var options = {  edges:{
+	//
+    var options = {
+    	nodes:{
+    		shape:'image'
+		},
+		interaction:{
+            hover:true,
+            hoverConnectedEdges: true
+        },
+    	edges:{
             arrows: {
             	from:{enabled: true, scaleFactor: 0.3, type: 'circle'},
-                to: {enabled: true, scaleFactor: 0.3, type: 'circle'}
+                to: {enabled: true, scaleFactor: 0.3, type: 'arrow'}
             }
         }
-
 };
-
     // 初始化关系图
     var network = new vis.Network(container, data, options);
+
+    // 获取节点信息
+    function getNode(option) {
+        for (var i = 0;i < nodes.length;i++){
+            if (option == nodes[i].id){
+                return nodes[i];
+            }
+        }
+    }
+
+    // 获取边信息
+	function getEdge(option){
+        var linkId = option;
+        var linkIdFirst = linkId.substring(0,1);//截取第一位
+        var linkIdLast = linkId.substring(linkId.length-1,linkId.length);//截取最后一位
+        var dataList = [];//存放线条两边的节点nodes数据
+        for (var j =0;j<nodes.length;j++){
+            if (linkIdFirst == nodes[j].id || linkIdLast == nodes[j].id){
+               dataList.push(nodes[j]);
+            }
+        }
+        return dataList;
+    }
+
+    // 鼠标悬停，显示弹框
+	network.on('hoverNode',function(properties){
+        var hoveNodeList = getNode(properties.node);
+        var deviceType = hoveNodeList.type;
+        var imgPathSrc = hoveNodeList.image;
+        if (deviceType == "router"){
+            var $ul = "<ul>"
+                +"<li><img src=' "+imgPathSrc+" ' width='30px' height='25px'><span> "+hoveNodeList.name+" </span> </li>"
+					+"<li>IP："+ hoveNodeList.ip+"</li>"
+					+"<li>S0/0/0："+ hoveNodeList["S0/0/0"]+"</li>"
+					+"<li>Port："+ hoveNodeList.port+"</li>"
+                +"</ul>";
+            $("#divHoverNode").append($ul);
+        }
+        $('#divHoverNode').css({
+            'display': 'block',
+            'left': properties.event.offsetX + 15,
+            'top' : properties.event.offsetY + 15
+        });
+        $('#menuOperation').hide();
+    });
+
+    // 从节点移开---隐藏弹框
+    network.on('blurNode',function(){
+        $("#divHoverNode").hide();
+        $("#divHoverNode").empty();//移除之后清空div
+    });
+
+    //  悬停在边上--显示弹框
+    network.on('hoverEdge',function(properties){
+        // console.log('悬停边',properties);
+        var hoveEdgeList = getEdge(properties.edge);
+        var $ul = "<ul>"
+            +"<li>名称："+ hoveEdgeList[0].name+"->"+hoveEdgeList[1].name+"</li>"
+            +"<li>端口号："+ hoveEdgeList[0].ip+"->"+hoveEdgeList[1].ip+"</li>"
+            +"</ul>";
+        $("#divHoverNode").append($ul);
+        $('#divHoverNode').css({
+            'display': 'block',
+            'left': properties.event.offsetX + 15,
+            'top' : properties.event.offsetY + 15
+        });
+        $('#menuOperation').hide();
+    });
+
+    //  从边上移开---隐藏弹框
+    network.on('blurEdge',function(properties){
+        $("#divHoverNode").hide();
+        $("#divHoverNode").empty();//移除之后清空div
+    });
+
+    //  点击的判断是否选中节点时候显示隐藏
+    network.on('click',function(properties){
+        var clickNodeList = getNode(properties.nodes[0]);
+        if (typeof(clickNodeList) == "undefined") {
+            $('#menuOperation').hide();
+        }else{
+            $('#menuOperation').css({
+                'display': 'block',
+                'left': properties.event.center.x + 15,
+                'top' : properties.event.center.y + 15
+            });
+            $("#divHoverNode").hide();
+       }
+    });
 
 </script>
 </html>
