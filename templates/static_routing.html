@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="{{ url_for('static', filename= './Bootstrap/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename= './Bootstrap/bootstrap/css/bootstrap-theme.min.css') }}" rel="stylesheet">
+	<script type="text/javascript" src="{{ url_for('static', filename= './js/vis-network.min.js') }}"></script>
+    <title>Test</title>
+</head>
+
+<body>
+<div class="container-fluid ">
+	<div class="row">
+		<div class="col-md-6 column">
+			<div id="mynetwork"></div>
+		</div>
+		<div class="col-md-6 column">
+
+		</div>
+	</div>
+</div>
+</body>
+<script src="{{ url_for('static', filename= './Jq/jquery.js') }}"></script>
+<script src="{{ Bootstrap/bootstrap/js/bootstrap.min.js }}"></script>
+<script type="text/javascript">
+	var nodes = new vis.DataSet([
+        { id: 1, label: "电脑pc0" ,image:"../static/img/computer.png", shape: 'image'},
+        { id: 2, label: "交换机s1" ,image:"../static/img/switch.png", shape: 'image'},
+        { id: 3, label: "路由器r0",image:"../static/img/router.png" , shape: 'image'},
+        { id: 4, label: "路由器r1",image:"../static/img/router.png" , shape: 'image'},
+    ]);
+
+    // 创建边数据数组
+    var edges = new vis.DataSet([
+        { from: 1, to: 2},
+        { from: 2, to: 3 },
+        { from: 2, to: 4 },
+        { from: 3, to: 4 }
+    ]);
+
+    // 获取容器
+    var container = document.getElementById('mynetwork');
+
+    // 将数据赋值给vis 数据格式化器
+    var data = {
+        nodes: nodes,
+        edges: edges
+    };
+    var options = {  edges:{
+            arrows: {
+            	from:{enabled: true, scaleFactor: 0.3, type: 'circle'},
+                to: {enabled: true, scaleFactor: 0.3, type: 'circle'}
+            }
+        }
+
+};
+
+    // 初始化关系图
+    var network = new vis.Network(container, data, options);
+
+</script>
+</html>
