@@ -3,8 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>这是一个测试页面</title>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script>
+    $(document).ready(function(){
+	    $("button").click(function(){
+		    $ajax({
+		        type："POST",
+		        url: "/showYaml",
+		        success:function(data){
+
+		    })
+
+	    });
+    });
+    </script>
 </head>
 <body>
     Hello World！
+    <button onclick="">获取文档</button>
+    <textarea class="div1">
+
+    </textarea>
 </body>
 </html>

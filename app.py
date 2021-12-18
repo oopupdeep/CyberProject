@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import render_template
 from TelnetClient import TelnetClient
-from flask import request
+from flask import request,url_for
 from YamlReader import YamlReader
 
 app = Flask(__name__)
@@ -10,7 +10,7 @@ yamlReader = YamlReader()
 
 @app.route("/")
 def test_page():
-    return render_template("test.html")
+    return render_template("static_routing.html")
 
 # telnet远程登录路由器
 @app.route("/telnet", methods=["POST"])
@@ -21,20 +21,11 @@ def telnet():
     msg = telnetClient.login(host_ip, username, password)
     return msg
 
-@app.route("/executeRipConfig", methods=["POST"])
-def executeRipConfigA():
-    data = None
-    router_type = request.form.get("router_type")
-    if router_type == "executeRipConfigA":
-        data = yamlReader.get_yaml("YamlConfig/rip/rip_configA.yaml")
-    elif router_type == "executeRipConfigB":
-        data = yamlReader.get_yaml("YamlConfig/rip/rip_configB.yaml")
-    elif router_type == "executeRipConfigC":
-        data = yamlReader.get_yaml("YamlConfig/rip/rip_configC.yaml")
-    for lines in data:
-        data = telnetClient.exec_cmd(lines)
-        print(data)
-    return "success"
+@app.route("/readYaml")
+def readYaml():
+    data = yamlReader.get_yaml("YamlConfig/test_config.yaml")
+    # data = yamlReader.get_yaml(file_data)
+    return data
 
 @app.route("/simpleExecuteRipConfig", methods=["POST"])
 def simpleExecuteRipConfig():
@@ -90,6 +81,23 @@ def simpleExecuteStaticConfig():
         data = telnetClient.exec_cmd(lines)
         print(data)
     return "success"
+
+@app.route("showYaml", method=['POST'])
+def showYaml():
+    yaml_file_name = request.get("yaml_file")
+    yaml_file = None
+    if "static" in yaml_file_name:
+        yaml_file = yamlReader.get_yaml("YamlConfig/static_router/{}".format(yaml_file_name))
+    elif 'rip' in yaml_file_name:
+        yaml_file = yamlReader.get_yaml("YamlConfig/rip/{}".format(yaml_file_name))
+    return yaml_file
+
+
+
+@app.route("modifyYaml", method=['POST'])
+def modifyYaml():
+    yaml_file = request.get("yaml_file")
+
 # @app.route("/executeRipConfig", methods=["POST"])
 # def executeRipConfigA():
 #     data = None
@@ -120,3 +128,4 @@ def simpleExecuteStaticConfig():
 #         data = telnetClient.exec_cmd(lines)
 #         print(data)
 #     return "success"
+
