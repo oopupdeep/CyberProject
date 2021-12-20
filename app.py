@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import render_template
 from TelnetClient import TelnetClient
-from flask import request,url_for
+from flask import request, url_for
 from YamlReader import YamlReader
 import json
 
@@ -9,9 +9,17 @@ app = Flask(__name__)
 telnetClient = TelnetClient()
 yamlReader = YamlReader()
 
+# 这里的IP用于telnet连接，请不要修改
+# 路由器的IP见具体的yaml文件
+routerA = "192.168.1.1"
+routerB = "192.168.1.2"
+routerC = "192.168.1.3"
+
+
 @app.route("/")
 def test_page():
     return render_template("static_routing.html")
+
 
 # telnet远程登录路由器
 @app.route("/telnet", methods=["POST"])
@@ -22,66 +30,78 @@ def telnet():
     msg = telnetClient.login(host_ip, username, password)
     return msg
 
+
 @app.route("/readYaml")
 def readYaml():
     data = yamlReader.get_yaml("YamlConfig/test_config.yaml")
     # data = yamlReader.get_yaml(file_data)
     return data
 
+
 @app.route("/simpleExecuteRipConfig", methods=["POST"])
 def simpleExecuteRipConfig():
-    data = None
-    msg = telnetClient.login("192.168.1.1", None, "CISCO")
-    data = yamlReader.get_yaml("YamlConfig/rip/rip_configA.yaml")
-    for lines in data:
-        data = telnetClient.exec_cmd(lines)
-        print(data)
-    msg = telnetClient.login("192.168.1.2", None, "CISCO")
-    data = yamlReader.get_yaml("YamlConfig/rip/rip_configB.yaml")
-    for lines in data:
-        data = telnetClient.exec_cmd(lines)
-        print(data)
-    msg = telnetClient.login("192.168.1.3", None, "CISCO")
-    data = yamlReader.get_yaml("YamlConfig/rip/rip_configC.yaml")
-    for lines in data:
-        data = telnetClient.exec_cmd(lines)
-        print(data)
+    # data = None
+    generalConfig(routerA, "YamlConfig/rip/rip_configA.yaml")
+    generalConfig(routerB, "YamlConfig/rip/rip_configB.yaml")
+    generalConfig(routerC, "YamlConfig/rip/rip_configC.yaml")
+    # msg = telnetClient.login("192.168.1.1", None, "CISCO")
+    # data = yamlReader.get_yaml("YamlConfig/rip/rip_configA.yaml")
+    # for lines in data:
+    #     data = telnetClient.exec_cmd(lines)
+    #     print(data)
+    # msg = telnetClient.login("192.168.1.2", None, "CISCO")
+    # data = yamlReader.get_yaml("YamlConfig/rip/rip_configB.yaml")
+    # for lines in data:
+    #     data = telnetClient.exec_cmd(lines)
+    #     print(data)
+    # msg = telnetClient.login("192.168.1.3", None, "CISCO")
+    # data = yamlReader.get_yaml("YamlConfig/rip/rip_configC.yaml")
+    # for lines in data:
+    #     data = telnetClient.exec_cmd(lines)
+    #     print(data)
     return "success"
+
 
 @app.route("/simpleExecuteStaticConfig", methods=["POST"])
 def simpleExecuteStaticConfig():
-    data = None
-    msg = telnetClient.login("192.168.1.1", None, "CISCO")
-    data = yamlReader.get_yaml("YamlConfig/static_router/static_router1_config.yaml")
-    for lines in data:
-        data = telnetClient.exec_cmd(lines)
-        print(data)
-    msg = telnetClient.login("192.168.1.2", None, "CISCO")
-    data = yamlReader.get_yaml("YamlConfig/static_router/static_router2_config.yaml")
-    for lines in data:
-        data = telnetClient.exec_cmd(lines)
-        print(data)
-    msg = telnetClient.login("192.168.1.3", None, "CISCO")
-    data = yamlReader.get_yaml("YamlConfig/static_router/static_router3_config.yaml")
-    for lines in data:
-        data = telnetClient.exec_cmd(lines)
-        print(data)
-    msg = telnetClient.login("192.168.1.1", None, "CISCO")
-    data = yamlReader.get_yaml("YamlConfig/static_router/static_router1_config1.yaml")
-    for lines in data:
-        data = telnetClient.exec_cmd(lines)
-        print(data)
-    msg = telnetClient.login("192.168.1.2", None, "CISCO")
-    data = yamlReader.get_yaml("YamlConfig/static_router/static_router2_config1.yaml")
-    for lines in data:
-        data = telnetClient.exec_cmd(lines)
-        print(data)
-    msg = telnetClient.login("192.168.1.3", None, "CISCO")
-    data = yamlReader.get_yaml("YamlConfig/static_router/static_router3_config1.yaml")
-    for lines in data:
-        data = telnetClient.exec_cmd(lines)
-        print(data)
+    generalConfig(routerA, "YamlConfig/static_router/static_router1_config.yaml")
+    generalConfig(routerB, "YamlConfig/static_router/static_router1_config.yaml")
+    generalConfig(routerC, "YamlConfig/static_router/static_router1_config.yaml")
+    generalConfig(routerA, "YamlConfig/static_router/static_router1_config1.yaml")
+    generalConfig(routerB, "YamlConfig/static_router/static_router1_config2.yaml")
+    generalConfig(routerC, "YamlConfig/static_router/static_router1_config3.yaml")
+    # msg = telnetClient.login("192.168.1.1", None, "CISCO")
+    # data = yamlReader.get_yaml("YamlConfig/static_router/static_router1_config.yaml")
+    # for lines in data:
+    #     data = telnetClient.exec_cmd(lines)
+    #     print(data)
+    # msg = telnetClient.login("192.168.1.2", None, "CISCO")
+    # data = yamlReader.get_yaml("YamlConfig/static_router/static_router2_config.yaml")
+    # for lines in data:
+    #     data = telnetClient.exec_cmd(lines)
+    #     print(data)
+    # msg = telnetClient.login("192.168.1.3", None, "CISCO")
+    # data = yamlReader.get_yaml("YamlConfig/static_router/static_router3_config.yaml")
+    # for lines in data:
+    #     data = telnetClient.exec_cmd(lines)
+    #     print(data)
+    # msg = telnetClient.login("192.168.1.1", None, "CISCO")
+    # data = yamlReader.get_yaml("YamlConfig/static_router/static_router1_config1.yaml")
+    # for lines in data:
+    #     data = telnetClient.exec_cmd(lines)
+    #     print(data)
+    # msg = telnetClient.login("192.168.1.2", None, "CISCO")
+    # data = yamlReader.get_yaml("YamlConfig/static_router/static_router2_config1.yaml")
+    # for lines in data:
+    #     data = telnetClient.exec_cmd(lines)
+    #     print(data)
+    # msg = telnetClient.login("192.168.1.3", None, "CISCO")
+    # data = yamlReader.get_yaml("YamlConfig/static_router/static_router3_config1.yaml")
+    # for lines in data:
+    #     data = telnetClient.exec_cmd(lines)
+    #     print(data)
     return "success"
+
 
 @app.route("/showYaml", methods=['POST'])
 def showYaml():
@@ -93,9 +113,8 @@ def showYaml():
         yaml_file = yamlReader.get_yaml("YamlConfig/rip/{}".format(yaml_file_name))
     elif 'ospf' in yaml_file_name:
         yaml_file = yamlReader.get_yaml("YamlConfig/ospf/{}".format(yaml_file_name))
-    print(json.dumps({"command":yaml_file}))
-    return json.dumps({"command":yaml_file})
-
+    print(json.dumps({"command": yaml_file}))
+    return json.dumps({"command": yaml_file})
 
 
 @app.route("/modifyYaml", methods=['POST'])
@@ -106,16 +125,25 @@ def modifyYaml():
     try:
         file = None
         if "static" in file_name:
-            file = open("YamlConfig/static_router/{}".format(file_name),'w')
+            file = open("YamlConfig/static_router/{}".format(file_name), 'w')
         elif 'rip' in file_name:
-            file = open("YamlConfig/rip/{}".format(file_name),'w')
+            file = open("YamlConfig/rip/{}".format(file_name), 'w')
         elif 'ospf' in file_name:
-            file = open("YamlConfig/ospf/{}".format(file_name),'w')
+            file = open("YamlConfig/ospf/{}".format(file_name), 'w')
         file.write(yaml_file)
         file.close()
-        return json.dumps({"msg":"成功！"})
+        return json.dumps({"msg": "成功！"})
     except:
-        return json.dumps({"msg":"修改失败！"})
+        return json.dumps({"msg": "修改失败！"})
+
+
+def generalConfig(ip_address, config_address):
+    # 对ip对应的路由器执行脚本
+    telnetClient.login(ip_address, None, "CISCO")
+    data = yamlReader.get_yaml(config_address)
+    for lines in data:
+        data = telnetClient.exec_cmd(lines)
+        print(data)
 
 # @app.route("/executeRipConfig", methods=["POST"])
 # def executeRipConfigA():
@@ -147,4 +175,3 @@ def modifyYaml():
 #         data = telnetClient.exec_cmd(lines)
 #         print(data)
 #     return "success"
-
