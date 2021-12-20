@@ -92,7 +92,7 @@ def showYaml():
     elif 'rip' in yaml_file_name:
         yaml_file = yamlReader.get_yaml("YamlConfig/rip/{}".format(yaml_file_name))
     elif 'ospf' in yaml_file_name:
-        yaml_file = yamlReader.get_yaml("YamlConfig/rip/{}".format(yaml_file_name))
+        yaml_file = yamlReader.get_yaml("YamlConfig/ospf/{}".format(yaml_file_name))
     print(json.dumps({"command":yaml_file}))
     return json.dumps({"command":yaml_file})
 
