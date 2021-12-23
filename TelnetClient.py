@@ -8,8 +8,8 @@ class TelnetClient:
     def input(self, cmd):
         self.tn.write(cmd.encode('ascii') + b'\n')
 
-    def get_output(self, sleep_seconds=2):
-        time.sleep(sleep_seconds)
+    def get_output(self):
+        # time.sleep(0.5)
         return self.tn.read_very_eager().decode('ascii')
 
     def login(self, host_ip, username, password):
@@ -17,8 +17,8 @@ class TelnetClient:
             self.tn.open(host_ip)
         except:
             return "连接失败"
-        self.tn.read_until(b'login: ')
-        self.input(username)
+        # self.tn.read_until(b'login: ')
+        # self.input(username)
         self.tn.read_until(b'Password: ')
         self.input(password)
         login_result = self.get_output()
@@ -43,7 +43,7 @@ class TelnetClient:
 
 if __name__ == '__main__':
     tc = TelnetClient()
-    tc.login('172.19.241.224', 'root', 'Nju123456')
+    tc.login('192.168.1.1', 'root', 'CISCO')
     tc.exec_cmd('ifconfig')
     tc.exec_cmd('ll -a')
     tc.logout()

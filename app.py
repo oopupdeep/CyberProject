@@ -41,6 +41,22 @@ def readYaml():
 @app.route("/simpleExecuteRipConfig", methods=["POST"])
 def simpleExecuteRipConfig():
     # data = None
+    # msg = telnetClient.login("192.168.1.1", None, "CISCO")
+    # data = yamlReader.get_yaml("YamlConfig/rip/rip_configA.yaml")
+    # for lines in data:
+    #     data = telnetClient.exec_cmd(lines)
+    #     print(data)
+    # msg = telnetClient.login("192.168.1.2", None, "CISCO")
+    # data = yamlReader.get_yaml("YamlConfig/rip/rip_configB.yaml")
+    # for lines in data:
+    #     data = telnetClient.exec_cmd(lines)
+    #     print(data)
+    # msg = telnetClient.login("192.168.1.3", None, "CISCO")
+    # data = yamlReader.get_yaml("YamlConfig/rip/rip_configC.yaml")
+    # for lines in data:
+    #     data = telnetClient.exec_cmd(lines)
+    #     print(data)
+
     generalConfig(routerA, "YamlConfig/rip/rip_configA.yaml")
     generalConfig(routerB, "YamlConfig/rip/rip_configB.yaml")
     generalConfig(routerC, "YamlConfig/rip/rip_configC.yaml")
@@ -76,21 +92,6 @@ def simpleExecuteRipConfig():
         }]
     msg = json.dumps(lis)
     return msg
-    # msg = telnetClient.login("192.168.1.1", None, "CISCO")
-    # data = yamlReader.get_yaml("YamlConfig/rip/rip_configA.yaml")
-    # for lines in data:
-    #     data = telnetClient.exec_cmd(lines)
-    #     print(data)
-    # msg = telnetClient.login("192.168.1.2", None, "CISCO")
-    # data = yamlReader.get_yaml("YamlConfig/rip/rip_configB.yaml")
-    # for lines in data:
-    #     data = telnetClient.exec_cmd(lines)
-    #     print(data)
-    # msg = telnetClient.login("192.168.1.3", None, "CISCO")
-    # data = yamlReader.get_yaml("YamlConfig/rip/rip_configC.yaml")
-    # for lines in data:
-    #     data = telnetClient.exec_cmd(lines)
-    #     print(data)
     # return "success"
 
 

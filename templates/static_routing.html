@@ -81,10 +81,10 @@
                 <div style="height: 500px">
                     <div class="row" style="margin-top: 20px">
                         <div class="col-md-4 ">
-                            <button class="btn-primary btn-lg" id="static_route">配置静态路由</button>
+                            <button class="btn-primary btn-lg" id="static_route" onclick="exec_static()">配置静态路由</button>
                         </div>
                         <div class="col-md-4 ">
-                            <button class="btn-primary btn-lg" id="rip">配置RIP</button>
+                            <button class="btn-primary btn-lg" id="rip" onclick="exec_rip()">配置RIP</button>
                         </div>
                         <div class="col-md-4 ">
                             <button class="btn-primary btn-lg" id="ospf">配置OSPF多域</button>
@@ -167,8 +167,10 @@
         "ignore": "true",
         "flag": "true"
     }];
+    var edges,container,data,options,network;
 
-    for (var i = 0; i < nodes.length; i++) {
+    function update(){
+        for (var i = 0; i < nodes.length; i++) {
         if (nodes[i].type == 'router') {
             nodes[i].image = '../static/img/router.png';
         }
@@ -181,7 +183,7 @@
     //    ]);
 
     // 创建边数据数组
-    var edges = new vis.DataSet([{
+    edges = new vis.DataSet([{
         from: 0,
         to: 1,
         id: "0->1"
@@ -192,15 +194,15 @@
     }]);
 
     // 获取容器
-    var container = document.getElementById('mynetwork');
+    container = document.getElementById('mynetwork');
 
     // 将数据赋值给vis 数据格式化器
-    var data = {
+    data = {
         nodes: nodes,
         edges: edges
     };
     //
-    var options = {
+    options = {
         nodes: {
             shape: 'image'
         },
@@ -224,7 +226,8 @@
         }
     };
     // 初始化关系图
-    var network = new vis.Network(container, data, options);
+    network = new vis.Network(container, data, options);
+    }
 
     // 获取节点信息
     function getNode(option) {
@@ -317,11 +320,13 @@
     // 有待测试
     function exec_rip(){
         $.ajax({
-            async: false,
+            async: true,
             type: "post",
             url: "/simpleExecuteRipConfig",
-            success: function(data) {
-                nodes = data //显示每个路由器的配置属性
+            success: function(d) {
+                console.log(d)
+                nodes = d //显示每个路由器的配置属性
+                console.log(nodes)
                 alert("请求成功！")
             },
             error: function(msg) {
