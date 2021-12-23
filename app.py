@@ -44,6 +44,38 @@ def simpleExecuteRipConfig():
     generalConfig(routerA, "YamlConfig/rip/rip_configA.yaml")
     generalConfig(routerB, "YamlConfig/rip/rip_configB.yaml")
     generalConfig(routerC, "YamlConfig/rip/rip_configC.yaml")
+    lis = [{"id": 0,
+        "name": "路由器A",
+        "label": "RTA",
+        "type": "router",
+        "ip": "102.168.1.1",
+        "S0/0/0": "192.168.1.2/24",
+        "port": "未知",
+        "ignore": "false",
+        "flag": "true"},{
+        "id": 1,
+        "name": "路由器B",
+        "label": "RTB",
+        "type": "router",
+        "ip": "192.168.1.12",
+        "S0/0/0": "192.168.1.2/24",
+        "s0/0/1": "192.168.2.1/24",
+        "port": "22",
+        "ignore": "true",
+        "flag": "true"
+        },{
+        "id": 2,
+        "name": "路由器C",
+        "label": "RTC",
+        "type": "router",
+        "ip": "192.168.1.3",
+        "S0/0/0": "192.168.12.2/24",
+        "port": "33",
+        "ignore": "true",
+        "flag": "true"
+        }]
+    msg = json.dumps(lis)
+    return msg
     # msg = telnetClient.login("192.168.1.1", None, "CISCO")
     # data = yamlReader.get_yaml("YamlConfig/rip/rip_configA.yaml")
     # for lines in data:
@@ -59,7 +91,7 @@ def simpleExecuteRipConfig():
     # for lines in data:
     #     data = telnetClient.exec_cmd(lines)
     #     print(data)
-    return "success"
+    # return "success"
 
 
 @app.route("/simpleExecuteStaticConfig", methods=["POST"])
@@ -70,6 +102,36 @@ def simpleExecuteStaticConfig():
     generalConfig(routerA, "YamlConfig/static_router/static_router1_config1.yaml")
     generalConfig(routerB, "YamlConfig/static_router/static_router1_config2.yaml")
     generalConfig(routerC, "YamlConfig/static_router/static_router1_config3.yaml")
+    lis = [{"id": 0,
+        "name": "路由器A",
+        "label": "RTA",
+        "type": "router",
+        "ip": "102.168.1.1",
+        "S0/0/0": "192.168.12.1/24",
+        "port": "未知",
+        "ignore": "false",
+        "flag": "true"},{
+        "id": 1,
+        "name": "路由器B",
+        "label": "RTB",
+        "type": "router",
+        "ip": "192.168.1.12",
+        "S0/0/0": "192.168.12.2/24",
+        "s0/0/1": "192.168.23.2/24",
+        "port": "22",
+        "ignore": "true",
+        "flag": "true"
+        },{
+        "id": 2,
+        "name": "路由器C",
+        "label": "RTC",
+        "type": "router",
+        "ip": "192.168.1.3",
+        "S0/0/0": "192.168.23.3/24",
+        "port": "33",
+        "ignore": "true",
+        "flag": "true"
+        }]
     # msg = telnetClient.login("192.168.1.1", None, "CISCO")
     # data = yamlReader.get_yaml("YamlConfig/static_router/static_router1_config.yaml")
     # for lines in data:
@@ -100,7 +162,7 @@ def simpleExecuteStaticConfig():
     # for lines in data:
     #     data = telnetClient.exec_cmd(lines)
     #     print(data)
-    return "success"
+    return json.dumps(lis)
 
 
 @app.route("/showYaml", methods=['POST'])

@@ -314,7 +314,37 @@
             $("#divHoverNode").hide();
         }
     });
-
+    // 有待测试
+    function exec_rip(){
+        $.ajax({
+            async: false,
+            type: "post",
+            url: "/simpleExecuteRipConfig",
+            success: function(data) {
+                nodes = data //显示每个路由器的配置属性
+                alert("请求成功！")
+            },
+            error: function(msg) {
+                console.log(msg)
+                alert("请求失败");
+            }
+        });
+    }
+    function exec_static(){
+        $.ajax({
+            async: false,
+            type: "post",
+            url: "/simpleExecuteStaticConfig",
+            success: function(data) {
+                nodes = data //显示每个路由器的配置属性
+                alert("请求成功！")
+            },
+            error: function(msg) {
+                console.log(msg)
+                alert("请求失败");
+            }
+        });
+    }
     function showFile() {
         var x = document.getElementById("select_yml")
         var index = x.selectedIndex
