@@ -136,7 +136,8 @@
 
 <script type="text/javascript">
     //nodes 配置好路由后，三个路由器的信息组成的list， var nodes = list; 属性和值都可以自定义，edges也是一样
-    var nodes = [{
+    var nodes = []
+    nodes = [{
         "id": 0,
         "name": "路由器A",
         "label": "RTA",
@@ -153,6 +154,7 @@
         "type": "router",
         "ip": "192.168.1.12",
         "S0/0/0": "192.168.12.1/24",
+        "S0/0/1": "192.168.12.1/24",
         "port": "22",
         "ignore": "true",
         "flag": "true"
@@ -169,18 +171,11 @@
     }];
     var edges,container,data,options,network;
 
-    function update(){
-        for (var i = 0; i < nodes.length; i++) {
+    for (var i = 0; i < nodes.length; i++) {
         if (nodes[i].type == 'router') {
             nodes[i].image = '../static/img/router.png';
         }
     }
-    //创建节点数组
-    //	var nodes = new vis.DataSet([
-    //        { id: 1, label: "RTA",image:"../static/img/router.png" , shape: 'image'},
-    //        { id: 2, label: "RTB",image:"../static/img/router.png" , shape: 'image'},
-    //		{ id: 3, label: "RTC",image:"../static/img/router.png" , shape: 'image'}
-    //    ]);
 
     // 创建边数据数组
     edges = new vis.DataSet([{
@@ -227,6 +222,18 @@
     };
     // 初始化关系图
     network = new vis.Network(container, data, options);
+
+    function update(){
+        for (var i = 0; i < nodes.length; i++) {
+            if (nodes[i].type == 'router') {
+                nodes[i].image = '../static/img/router.png';
+            }
+        }
+        data = {
+            nodes: nodes,
+            edges: edges
+        };
+        network.setData(data)
     }
 
     // 获取节点信息
@@ -317,16 +324,19 @@
             $("#divHoverNode").hide();
         }
     });
+
     // 有待测试
     function exec_rip(){
         $.ajax({
             async: true,
             type: "post",
             url: "/simpleExecuteRipConfig",
-            success: function(d) {
-                console.log(d)
-                nodes = d //显示每个路由器的配置属性
-                console.log(nodes)
+            dataType:"json",
+            success: function(resp) {
+                for (let i = 0; i < 3; i++) {
+                    nodes[i] = resp[i]
+                }
+                update()
                 alert("请求成功！")
             },
             error: function(msg) {
@@ -335,13 +345,17 @@
             }
         });
     }
+
     function exec_static(){
         $.ajax({
             async: false,
             type: "post",
             url: "/simpleExecuteStaticConfig",
-            success: function(data) {
-                nodes = data //显示每个路由器的配置属性
+            success: function(resp) {
+                for (let i = 0; i < 3; i++) {
+                    nodes[i] = resp[i]
+                }
+                update()
                 alert("请求成功！")
             },
             error: function(msg) {
@@ -350,6 +364,7 @@
             }
         });
     }
+
     function showFile() {
         var x = document.getElementById("select_yml")
         var index = x.selectedIndex

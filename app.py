@@ -57,14 +57,14 @@ def simpleExecuteRipConfig():
     #     data = telnetClient.exec_cmd(lines)
     #     print(data)
 
-    generalConfig(routerA, "YamlConfig/rip/rip_configA.yaml")
-    generalConfig(routerB, "YamlConfig/rip/rip_configB.yaml")
-    generalConfig(routerC, "YamlConfig/rip/rip_configC.yaml")
+    # generalConfig(routerA, "YamlConfig/rip/rip_configA.yaml")
+    # generalConfig(routerB, "YamlConfig/rip/rip_configB.yaml")
+    # generalConfig(routerC, "YamlConfig/rip/rip_configC.yaml")
     lis = [{"id": 0,
         "name": "路由器A",
         "label": "RTA",
         "type": "router",
-        "ip": "102.168.1.1",
+        "ip": "192.168.1.1",
         "S0/0/0": "192.168.1.2/24",
         "port": "未知",
         "ignore": "false",
@@ -73,7 +73,7 @@ def simpleExecuteRipConfig():
         "name": "路由器B",
         "label": "RTB",
         "type": "router",
-        "ip": "192.168.1.12",
+        "ip": "192.168.1.2",
         "S0/0/0": "192.168.1.2/24",
         "s0/0/1": "192.168.2.1/24",
         "port": "22",
@@ -103,20 +103,22 @@ def simpleExecuteStaticConfig():
     generalConfig(routerA, "YamlConfig/static_router/static_router1_config1.yaml")
     generalConfig(routerB, "YamlConfig/static_router/static_router1_config2.yaml")
     generalConfig(routerC, "YamlConfig/static_router/static_router1_config3.yaml")
-    lis = [{"id": 0,
+    lis = [{
+        "id": 0,
         "name": "路由器A",
         "label": "RTA",
         "type": "router",
-        "ip": "102.168.1.1",
+        "ip": "192.168.1.1",
         "S0/0/0": "192.168.12.1/24",
         "port": "未知",
         "ignore": "false",
-        "flag": "true"},{
+        "flag": "true"
+        },{
         "id": 1,
         "name": "路由器B",
         "label": "RTB",
         "type": "router",
-        "ip": "192.168.1.12",
+        "ip": "192.168.1.2",
         "S0/0/0": "192.168.12.2/24",
         "s0/0/1": "192.168.23.2/24",
         "port": "22",
