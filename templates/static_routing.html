@@ -87,7 +87,7 @@
                             <button class="btn-primary btn-lg" id="rip" onclick="exec_rip()">配置RIP</button>
                         </div>
                         <div class="col-md-4 ">
-                            <button class="btn-primary btn-lg" id="ospf">配置OSPF多域</button>
+                            <button class="btn-primary btn-lg" id="ospf" onclick="exec_ospf()">配置OSPF多域</button>
                         </div>
                     </div>
                     <div class="row">
@@ -267,8 +267,8 @@
         if (deviceType == "router") {
             var $ul = "<ul>" +
                 "<li><img src=' " + imgPathSrc + " ' width='30px' height='25px'><span> " + hoveNodeList.name + " </span> </li>" +
-                "<li>IP：" + hoveNodeList.ip + "</li>" +
-                "<li>S0/0/0：" + hoveNodeList["S0/0/0"] + "</li>" +
+                "<li onclick='changeIP("+hoveNodeList.id+")'>IP：" + hoveNodeList.ip + "</li>" +
+                "<li>S0/0/0：" + hoveNodeList["S0/0/0"] + "</li>" +/*这里有问题*/
                 "<li>Port：" + hoveNodeList.port + "</li>" +
                 "</ul>";
             $("#divHoverNode").append($ul);
@@ -325,10 +325,31 @@
         }
     });
 
-    // 有待测试
+    function changeIP(id){
+        var newIP = prompt("请输入新的IP","")
+        $.ajax({
+            type: "post",
+            url: "/changeIP",
+            data: { ID: id,IP: newIP },
+            dataType:"json",
+            success: function(resp) {
+                for (let i = 0; i < 3; i++) {
+                    nodes[i] = resp[i]
+                }
+                update()
+                alert("请求成功！")
+                console.log(id+"."+newIP)
+            },
+            error: function(msg) {
+                console.log(msg)
+                alert("请求失败");
+            }
+        });
+    }
+
+
     function exec_rip(){
         $.ajax({
-            async: true,
             type: "post",
             url: "/simpleExecuteRipConfig",
             dataType:"json",
@@ -348,9 +369,26 @@
 
     function exec_static(){
         $.ajax({
-            async: false,
             type: "post",
             url: "/simpleExecuteStaticConfig",
+            success: function(resp) {
+                for (let i = 0; i < 3; i++) {
+                    nodes[i] = resp[i]
+                }
+                update()
+                alert("请求成功！")
+            },
+            error: function(msg) {
+                console.log(msg)
+                alert("请求失败");
+            }
+        });
+    }
+
+    function exec_ospf(){
+        $.ajax({
+            type: "post",
+            url: "/simpleExecuteOspfConfig",
             success: function(resp) {
                 for (let i = 0; i < 3; i++) {
                     nodes[i] = resp[i]
@@ -374,7 +412,6 @@
             "YamlName": opt
         })
         $.ajax({
-            async: false,
             type: "post",
             // headers:{
             // },
@@ -409,7 +446,6 @@
             "option": opt
         })
         $.ajax({
-            async: false,
             type: "post",
             // headers:{
             // },
