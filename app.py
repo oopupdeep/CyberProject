@@ -198,6 +198,10 @@ def changeIP():
     global routerA, routerB, routerC
     routerid = request.form.get("ID")
     routerip = request.form.get("IP")
+    file = open("YamlConfig/change_router_ip.yaml","w")
+    lines = file.readlines()
+    lines[-1] = f"ip address {routerip} 255.255.255.0"
+    file.write(lines)
     if routerid == "0":
         # 需要修改change_router_ip脚本
         generalConfig(routerA, "YamlConfig/change_router_ip.yaml")
