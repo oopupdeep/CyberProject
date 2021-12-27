@@ -10,7 +10,7 @@ telnetClient = TelnetClient()
 yamlReader = YamlReader()
 
 # 这里的IP用于telnet连接，请不要修改
-# 路由器的IP见具体的yaml文件
+# 路由器接口的IP见具体的yaml文件
 routerA = "192.168.1.1"
 routerB = "192.168.1.2"
 routerC = "192.168.1.3"
@@ -73,8 +73,7 @@ def simpleExecuteRipConfig():
                "ignore": "true",
                "flag": "true"
            }]
-    msg = json.dumps(lis)
-    return msg
+    return json.dumps(lis)
 
 
 @app.route("/simpleExecuteStaticConfig", methods=["POST"])
@@ -198,6 +197,15 @@ def changeIP():
     global routerA, routerB, routerC
     routerid = request.form.get("ID")
     routerip = request.form.get("IP")
+    lines = []
+    with open("YamlConfig/change_router_ip.yaml", 'r', encoding='utf-8') as file:
+        lines = file.readlines()
+    ip = f"ip address {routerip} 255.255.255.0"
+    lines[len(lines) - 1] = ip
+    with open("YamlConfig/change_router_ip.yaml", 'w', encoding='utf-8') as file:
+        for line in lines:
+            file.write(line)
+
     if routerid == "0":
         # 需要修改change_router_ip脚本
         generalConfig(routerA, "YamlConfig/change_router_ip.yaml")

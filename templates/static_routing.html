@@ -268,7 +268,7 @@
             var $ul = "<ul>" +
                 "<li><img src=' " + imgPathSrc + " ' width='30px' height='25px'><span> " + hoveNodeList.name + " </span> </li>" +
                 "<li onclick='changeIP("+hoveNodeList.id+")'>IP：" + hoveNodeList.ip + "</li>" +
-                "<li>S0/0/0：" + hoveNodeList["S0/0/0"] + "</li>" +/*这里有问题*/
+                "<li>S0/0/0：" + hoveNodeList["S0/0/0"] + "</li>" +/*这里有问题，routerB应该显示两个*/
                 "<li>Port：" + hoveNodeList.port + "</li>" +
                 "</ul>";
             $("#divHoverNode").append($ul);
@@ -311,7 +311,7 @@
     });
 
     //  点击的判断是否选中节点时候显示隐藏
-    network.on('click', function(properties) {
+/*    network.on('click', function(properties) {
         var clickNodeList = getNode(properties.nodes[0]);
         if (typeof(clickNodeList) == "undefined") {
             $('#menuOperation').hide();
@@ -323,7 +323,7 @@
             });
             $("#divHoverNode").hide();
         }
-    });
+    });*/
 
     function changeIP(id){
         var newIP = prompt("请输入新的IP","")
@@ -346,7 +346,6 @@
             }
         });
     }
-
 
     function exec_rip(){
         $.ajax({
