@@ -11,13 +11,12 @@
     <link href="../static/css/bootstrap.min.css" rel="stylesheet" />
     <title>Test</title>
 </head>
+
 <style type="text/css">
     #mynetwork {
         height: 400px;
         border: 1px solid lightgray;
     }
-</style>
-<style type="text/css">
     * {
         padding: 0;
         margin: 0;
@@ -53,6 +52,43 @@
         border-bottom: none;
         padding: 5px 10px 0 10px;
     }
+    /* 弹窗 (background) */
+    .modal {
+        display: none; /* 默认隐藏 */
+        position: fixed; /* 固定定位 */
+        z-index: 1; /* 设置在顶层 */
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0,0.4);
+    }
+
+    /* 弹窗内容 */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+
+    /* 关闭按钮 */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
 </style>
 
 <body>
@@ -80,14 +116,17 @@
             <div class="col-md-6 column">
                 <div style="height: 500px">
                     <div class="row" style="margin-top: 20px">
-                        <div class="col-md-4 ">
+                        <div class="col-md-3 ">
                             <button class="btn-primary btn-lg" id="static_route" onclick="exec_static()">配置静态路由</button>
                         </div>
-                        <div class="col-md-4 ">
+                        <div class="col-md-3 ">
                             <button class="btn-primary btn-lg" id="rip" onclick="exec_rip()">配置RIP</button>
                         </div>
-                        <div class="col-md-4 ">
+                        <div class="col-md-3 ">
                             <button class="btn-primary btn-lg" id="ospf" onclick="exec_ospf()">配置OSPF多域</button>
+                        </div>
+                        <div class="col-md-3 ">
+                            <button class="btn-primary btn-lg" id="check" onclick="checkTopology()">验证</button>
                         </div>
                     </div>
                     <div class="row">
@@ -131,10 +170,20 @@
             </div>
         </div>
     </div>
+    <!-- 弹窗 -->
+    <div id="myModal" class="modal">
+        <!-- 弹窗内容 -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <textarea style="width: 100%;height:400px;resize: none" readonly id="checked"></textarea>
+        </div>
+
+    </div>
 </body>
 
 
 <script type="text/javascript">
+
     //nodes 配置好路由后，三个路由器的信息组成的list， var nodes = list; 属性和值都可以自定义，edges也是一样
     var nodes = []
     nodes = [{
@@ -142,9 +191,10 @@
         "name": "路由器A",
         "label": "RTA",
         "type": "router",
-        "ip": "102.168.1.1",
-        "S0/0/0": "192.168.12.0/24",
-        "port": "未知",
+        "ip": "",
+        "S0/0/0": "",
+        "S0/0/1": "",
+        "port": "",
         "ignore": "false",
         "flag": "true"
     }, {
@@ -152,10 +202,10 @@
         "name": "路由器B",
         "label": "RTB",
         "type": "router",
-        "ip": "192.168.1.12",
-        "S0/0/0": "192.168.12.1/24",
-        "S0/0/1": "192.168.12.1/24",
-        "port": "22",
+        "ip": "",
+        "S0/0/0": "",
+        "S0/0/1": "",
+        "port": "",
         "ignore": "true",
         "flag": "true"
     }, {
@@ -163,9 +213,10 @@
         "name": "路由器C",
         "label": "RTC",
         "type": "router",
-        "ip": "192.168.1.3",
-        "S0/0/0": "192.168.12.2/24",
-        "port": "33",
+        "ip": "",
+        "S0/0/0": "",
+        "S0/0/1": "",
+        "port": "",
         "ignore": "true",
         "flag": "true"
     }];
@@ -268,7 +319,8 @@
             var $ul = "<ul>" +
                 "<li><img src=' " + imgPathSrc + " ' width='30px' height='25px'><span> " + hoveNodeList.name + " </span> </li>" +
                 "<li onclick='changeIP("+hoveNodeList.id+")'>IP：" + hoveNodeList.ip + "</li>" +
-                "<li>S0/0/0：" + hoveNodeList["S0/0/0"] + "</li>" +/*这里有问题，routerB应该显示两个*/
+                "<li>S0/0/0：" + hoveNodeList["S0/0/0"] + "</li>" +
+                "<li>S0/0/1：" + hoveNodeList["S0/0/1"] + "</li>" +
                 "<li>Port：" + hoveNodeList.port + "</li>" +
                 "</ul>";
             $("#divHoverNode").append($ul);
@@ -358,6 +410,7 @@
                 }
                 update()
                 alert("请求成功！")
+                status = "rip"
             },
             error: function(msg) {
                 console.log(msg)
@@ -376,6 +429,7 @@
                 }
                 update()
                 alert("请求成功！")
+                status = "static"
             },
             error: function(msg) {
                 console.log(msg)
@@ -394,6 +448,7 @@
                 }
                 update()
                 alert("请求成功！")
+                status = "ospf"
             },
             error: function(msg) {
                 console.log(msg)
@@ -467,6 +522,55 @@
                 alert("请求失败");
             }
         });
+    }
+
+    var status = "null"//保存当前的拓扑状态
+    function checkTopology(){
+        if (status=="null"){
+            alert("请先配置一个拓扑");
+        }else {
+            $.ajax({
+                type: "post",
+                url: "/checkTopology",
+                data: { TYPE:status },
+                dataType:"json",
+                success: function(resp) {
+                    document.getElementById("checked").value = resp;
+                    show_modal();
+                },
+                error: function(msg) {
+                    console.log(msg)
+                    alert("请求失败");
+                }
+            });
+        }
+    }
+
+    // 获取弹窗
+    var modal = document.getElementById('myModal');
+
+    // 打开弹窗的按钮对象
+    var btn = document.getElementById("myBtn");
+
+    // 获取 <span> 元素，用于关闭弹窗
+    var span = document.querySelector('.close');
+
+    // 打开弹窗
+    function show_modal() {
+        //document.getElementById("checked").value = "567756785678 \n 87896787 \n s97898";
+        modal.style.display = "block";
+    }
+
+    // 点击 <span> (x), 关闭弹窗
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // 在用户点击其他地方时，关闭弹窗
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
     }
 </script>
 
