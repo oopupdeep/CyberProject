@@ -40,9 +40,9 @@ def readYaml():
 
 @app.route("/simpleExecuteRipConfig", methods=["POST"])
 def simpleExecuteRipConfig():
-    generalConfig(routerA, "YamlConfig/rip/rip_configA.yaml")
-    generalConfig(routerB, "YamlConfig/rip/rip_configB.yaml")
-    generalConfig(routerC, "YamlConfig/rip/rip_configC.yaml")
+    # generalConfig(routerA, "YamlConfig/rip/rip_configA.yaml")
+    # generalConfig(routerB, "YamlConfig/rip/rip_configB.yaml")
+    # generalConfig(routerC, "YamlConfig/rip/rip_configC.yaml")
     lis = [{"id": 0,
             "name": "路由器A",
             "label": "RTA",
@@ -197,7 +197,6 @@ def changeIP():
     global routerA, routerB, routerC
     routerid = request.form.get("ID")
     routerip = request.form.get("IP")
-    lines = []
     with open("YamlConfig/change_router_ip.yaml", 'r', encoding='utf-8') as file:
         lines = file.readlines()
     ip = f"ip address {routerip} 255.255.255.0"
@@ -207,7 +206,6 @@ def changeIP():
             file.write(line)
 
     if routerid == "0":
-        # 需要修改change_router_ip脚本
         generalConfig(routerA, "YamlConfig/change_router_ip.yaml")
         routerA = routerip
     elif routerid == "1":
@@ -216,7 +214,9 @@ def changeIP():
     elif routerid == "2":
         generalConfig(routerC, "YamlConfig/change_router_ip.yaml")
         routerC = routerip
-    lis = [{"id": 0,
+    lis = [
+        {
+            "id": 0,
             "name": "路由器A",
             "label": "RTA",
             "type": "router",
@@ -224,7 +224,8 @@ def changeIP():
             "S0/0/0": "192.168.1.2/24",
             "port": "未知",
             "ignore": "false",
-            "flag": "true"}, {
+            "flag": "true"},
+        {
                "id": 1,
                "name": "路由器B",
                "label": "RTB",
@@ -248,11 +249,29 @@ def changeIP():
            }]
     return json.dumps(lis)
 
+# 根据topology的值执行对应的验证脚本并将结果返回到前端
+@app.route("/checkTopology", methods=['POST'])
+def checkTopology():
+    topology = request.form.get("TYPE")
+    result = None
+    if topology == "static":
+        result = generalConfig(routerA,"YamlConfig/check_topology/check_static.yaml")
+        #result = "static"
+    elif topology == "rip":
+        result = "rip"
+    elif topology == "ospf":
+        result = "ospf"
+    return json.dumps(result)
+
 
 def generalConfig(ip_address, config_address):
     # 对ip对应的路由器执行脚本
     telnetClient.login(ip_address, None, "CISCO")
     data = yamlReader.get_yaml(config_address)
+    result = ""
     for lines in data:
         data = telnetClient.exec_cmd(lines)
-        print(data)
+        result = result + data + '\n'
+        #print(data)
+    print(result)
+    return result
