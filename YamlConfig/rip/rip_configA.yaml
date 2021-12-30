@@ -5,10 +5,13 @@ no router ospf 1
 int s0/0/0
 ip address 192.167.1.2 255.255.255.0
 no shutdown
+exit
+int f0/1
+ip address 10.0.0.1 255.255.255.0
+no shutdown
 end
 configure terminal
 router rip
-version 1
 network 192.167.1.0
 network 10.0.0.0
 end
