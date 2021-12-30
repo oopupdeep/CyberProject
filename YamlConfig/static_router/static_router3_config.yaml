@@ -1,6 +1,8 @@
 enable
 CISCO
 configure terminal
+no router rip
+no router ospf 1
 int loopback0
 ip address 3.3.3.3 255.255.255.0
 int s0/0/1

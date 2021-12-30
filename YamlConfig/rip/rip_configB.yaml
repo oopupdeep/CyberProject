@@ -1,6 +1,7 @@
 enable
 CISCO
 configure terminal
+no router ospf 1
 int s0/0/0
 ip address 192.167.1.1 255.255.255.0
 no shutdown
@@ -14,3 +15,4 @@ configure terminal
 router rip
 network 192.167.1.0
 network 192.167.2.0
+end

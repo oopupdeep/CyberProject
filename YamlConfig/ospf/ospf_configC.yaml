@@ -1,6 +1,7 @@
 enable
 CISCO
 configure terminal
+no router rip
 int s0/0/0
 ip address 192.168.2.2 255.255.255.0
 no shutdown

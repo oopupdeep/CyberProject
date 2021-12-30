@@ -44,50 +44,49 @@ def simpleExecuteRipConfig():
     generalConfig(routerA, "YamlConfig/rip/rip_configA.yaml")
     generalConfig(routerB, "YamlConfig/rip/rip_configB.yaml")
     generalConfig(routerC, "YamlConfig/rip/rip_configC.yaml")
-    output_a = returnInfo(routerA)
-    index1_a = output_a.index('Serial0/0/0')
-    index2_a = output_a.index('Serial0/0/1')
-    output_b = returnInfo(routerB)
-    index1_b = output_b.index('Serial0/0/0')
-    index2_b = output_b.index('Serial0/0/1')
-    output_c = returnInfo(routerC)
-    index1_c = output_c.index('Serial0/0/0')
-    index2_c = output_c.index('Serial0/0/1')
-    lis = [{"id": 0,
-            "name": "路由器A",
-            "label": "RTA",
-            "type": "router",
-            "ip": routerA,
-            "S0/0/0": output_a[index1_a+1],
-            "s0/0/1": output_a[index2_a+1],
-            "port": "未知",
-            "ignore": "false",
-            "flag": "true"}, {
-               "id": 1,
-               "name": "路由器B",
-               "label": "RTB",
-               "type": "router",
-               "ip": routerB,
-               "S0/0/0": output_b[index1_b+1],
-               "S0/0/1": output_b[index2_b+1],
-               "port": "22",
-               "ignore": "true",
-               "flag": "true"
-           }, {
-               "id": 2,
-               "name": "路由器C",
-               "label": "RTC",
-               "type": "router",
-               "ip": routerC,
-               "S0/0/0": output_c[index1_c+1],
-               "S0/0/1": output_c[index2_c+1],
-               "port": "33",
-               "ignore": "true",
-               "flag": "true"
-           }]
-    print("rip")
-    print(lis)
-    return json.dumps(lis)
+    # output_a = returnInfo(routerA)
+    # index1_a = output_a.index('Serial0/0/0')
+    # index2_a = output_a.index('Serial0/0/1')
+    # output_b = returnInfo(routerB)
+    # index1_b = output_b.index('Serial0/0/0')
+    # index2_b = output_b.index('Serial0/0/1')
+    # output_c = returnInfo(routerC)
+    # index1_c = output_c.index('Serial0/0/0')
+    # index2_c = output_c.index('Serial0/0/1')
+    # lis = [{"id": 0,
+    #         "name": "路由器A",
+    #         "label": "RTA",
+    #         "type": "router",
+    #         "ip": routerA,
+    #         "S0/0/0": output_a[index1_a+1],
+    #         "s0/0/1": output_a[index2_a+1],
+    #         "port": "未知",
+    #         "ignore": "false",
+    #         "flag": "true"}, {
+    #            "id": 1,
+    #            "name": "路由器B",
+    #            "label": "RTB",
+    #            "type": "router",
+    #            "ip": routerB,
+    #            "S0/0/0": output_b[index1_b+1],
+    #            "S0/0/1": output_b[index2_b+1],
+    #            "port": "22",
+    #            "ignore": "true",
+    #            "flag": "true"
+    #        }, {
+    #            "id": 2,
+    #            "name": "路由器C",
+    #            "label": "RTC",
+    #            "type": "router",
+    #            "ip": routerC,
+    #            "S0/0/0": output_c[index1_c+1],
+    #            "S0/0/1": output_c[index2_c+1],
+    #            "port": "33",
+    #            "ignore": "true",
+    #            "flag": "true"
+    #        }]
+    # return json.dumps(lis)
+    return returnList()
 
 
 @app.route("/simpleExecuteStaticConfig", methods=["POST"])
@@ -98,50 +97,49 @@ def simpleExecuteStaticConfig():
     generalConfig(routerA, "YamlConfig/static_router/static_router1_config1.yaml")
     generalConfig(routerB, "YamlConfig/static_router/static_router2_config1.yaml")
     generalConfig(routerC, "YamlConfig/static_router/static_router3_config1.yaml")
-    output_a = returnInfo(routerA)
-    index1_a = output_a.index('Serial0/0/0')
-    index2_a = output_a.index('Serial0/0/1')
-    output_b = returnInfo(routerB)
-    index1_b = output_b.index('Serial0/0/0')
-    index2_b = output_b.index('Serial0/0/1')
-    output_c = returnInfo(routerC)
-    index1_c = output_c.index('Serial0/0/0')
-    index2_c = output_c.index('Serial0/0/1')
-    lis = [{"id": 0,
-            "name": "路由器A",
-            "label": "RTA",
-            "type": "router",
-            "ip": routerA,
-            "S0/0/0": output_a[index1_a + 1],
-            "s0/0/1": output_a[index2_a + 1],
-            "port": "未知",
-            "ignore": "false",
-            "flag": "true"}, {
-               "id": 1,
-               "name": "路由器B",
-               "label": "RTB",
-               "type": "router",
-               "ip": routerB,
-               "S0/0/0": output_b[index1_b + 1],
-               "S0/0/1": output_b[index2_b + 1],
-               "port": "22",
-               "ignore": "true",
-               "flag": "true"
-           }, {
-               "id": 2,
-               "name": "路由器C",
-               "label": "RTC",
-               "type": "router",
-               "ip": routerC,
-               "S0/0/0": output_c[index1_c + 1],
-               "S0/0/1": output_c[index2_c + 1],
-               "port": "33",
-               "ignore": "true",
-               "flag": "true"
-           }]
-    print("static")
-    print(lis)
-    return json.dumps(lis)
+    # output_a = returnInfo(routerA)
+    # index1_a = output_a.index('Serial0/0/0')
+    # index2_a = output_a.index('Serial0/0/1')
+    # output_b = returnInfo(routerB)
+    # index1_b = output_b.index('Serial0/0/0')
+    # index2_b = output_b.index('Serial0/0/1')
+    # output_c = returnInfo(routerC)
+    # index1_c = output_c.index('Serial0/0/0')
+    # index2_c = output_c.index('Serial0/0/1')
+    # lis = [{"id": 0,
+    #         "name": "路由器A",
+    #         "label": "RTA",
+    #         "type": "router",
+    #         "ip": routerA,
+    #         "S0/0/0": output_a[index1_a + 1],
+    #         "s0/0/1": output_a[index2_a + 1],
+    #         "port": "未知",
+    #         "ignore": "false",
+    #         "flag": "true"}, {
+    #            "id": 1,
+    #            "name": "路由器B",
+    #            "label": "RTB",
+    #            "type": "router",
+    #            "ip": routerB,
+    #            "S0/0/0": output_b[index1_b + 1],
+    #            "S0/0/1": output_b[index2_b + 1],
+    #            "port": "22",
+    #            "ignore": "true",
+    #            "flag": "true"
+    #        }, {
+    #            "id": 2,
+    #            "name": "路由器C",
+    #            "label": "RTC",
+    #            "type": "router",
+    #            "ip": routerC,
+    #            "S0/0/0": output_c[index1_c + 1],
+    #            "S0/0/1": output_c[index2_c + 1],
+    #            "port": "33",
+    #            "ignore": "true",
+    #            "flag": "true"
+    #        }]
+    # return json.dumps(lis)
+    return returnList()
 
 
 @app.route("/simpleExecuteOspfConfig", methods=["POST"])
@@ -149,38 +147,49 @@ def simpleExecuteOspfConfig():
     generalConfig(routerA, "YamlConfig/ospf/ospf_configA.yaml")
     generalConfig(routerB, "YamlConfig/ospf/ospf_configB.yaml")
     generalConfig(routerC, "YamlConfig/ospf/ospf_configC.yaml")
-    lis = [{"id": 0,
-            "name": "路由器A",
-            "label": "RTA",
-            "type": "router",
-            "ip": routerA,
-            "S0/0/0": "192.168.1.2/24",
-            "port": "未知",
-            "ignore": "false",
-            "flag": "true"}, {
-               "id": 1,
-               "name": "路由器B",
-               "label": "RTB",
-               "type": "router",
-               "ip": routerB,
-               "S0/0/0": "192.168.1.2/24",
-               "s0/0/1": "192.168.2.1/24",
-               "port": "22",
-               "ignore": "true",
-               "flag": "true"
-           }, {
-               "id": 2,
-               "name": "路由器C",
-               "label": "RTC",
-               "type": "router",
-               "ip": routerC,
-               "S0/0/0": "192.168.2.2/24",
-               "port": "33",
-               "ignore": "true",
-               "flag": "true"
-           }]
-    msg = json.dumps(lis)
-    return msg
+    # output_a = returnInfo(routerA)
+    # index1_a = output_a.index('Serial0/0/0')
+    # index2_a = output_a.index('Serial0/0/1')
+    # output_b = returnInfo(routerB)
+    # index1_b = output_b.index('Serial0/0/0')
+    # index2_b = output_b.index('Serial0/0/1')
+    # output_c = returnInfo(routerC)
+    # index1_c = output_c.index('Serial0/0/0')
+    # index2_c = output_c.index('Serial0/0/1')
+    # lis = [{"id": 0,
+    #         "name": "路由器A",
+    #         "label": "RTA",
+    #         "type": "router",
+    #         "ip": routerA,
+    #         "S0/0/0": output_a[index1_a + 1],
+    #         "s0/0/1": output_a[index2_a + 1],
+    #         "port": "未知",
+    #         "ignore": "false",
+    #         "flag": "true"}, {
+    #            "id": 1,
+    #            "name": "路由器B",
+    #            "label": "RTB",
+    #            "type": "router",
+    #            "ip": routerB,
+    #            "S0/0/0": output_b[index1_b + 1],
+    #            "S0/0/1": output_b[index2_b + 1],
+    #            "port": "22",
+    #            "ignore": "true",
+    #            "flag": "true"
+    #        }, {
+    #            "id": 2,
+    #            "name": "路由器C",
+    #            "label": "RTC",
+    #            "type": "router",
+    #            "ip": routerC,
+    #            "S0/0/0": output_c[index1_c + 1],
+    #            "S0/0/1": output_c[index2_c + 1],
+    #            "port": "33",
+    #            "ignore": "true",
+    #            "flag": "true"
+    #        }]
+    # return json.dumps(lis)
+    return returnList()
 
 
 @app.route("/showYaml", methods=['POST'])
@@ -251,28 +260,29 @@ def changeIP():
             "ignore": "false",
             "flag": "true"},
         {
-               "id": 1,
-               "name": "路由器B",
-               "label": "RTB",
-               "type": "router",
-               "ip": routerB,
-               "S0/0/0": "192.168.1.2/24",
-               "s0/0/1": "192.168.2.1/24",
-               "port": "22",
-               "ignore": "true",
-               "flag": "true"
-           }, {
-               "id": 2,
-               "name": "路由器C",
-               "label": "RTC",
-               "type": "router",
-               "ip": routerC,
-               "S0/0/0": "192.168.2.2/24",
-               "port": "33",
-               "ignore": "true",
-               "flag": "true"
-           }]
+            "id": 1,
+            "name": "路由器B",
+            "label": "RTB",
+            "type": "router",
+            "ip": routerB,
+            "S0/0/0": "192.168.1.2/24",
+            "s0/0/1": "192.168.2.1/24",
+            "port": "22",
+            "ignore": "true",
+            "flag": "true"
+        }, {
+            "id": 2,
+            "name": "路由器C",
+            "label": "RTC",
+            "type": "router",
+            "ip": routerC,
+            "S0/0/0": "192.168.2.2/24",
+            "port": "33",
+            "ignore": "true",
+            "flag": "true"
+        }]
     return json.dumps(lis)
+
 
 # 根据topology的值执行对应的验证脚本并将结果返回到前端
 @app.route("/checkTopology", methods=['POST'])
@@ -280,14 +290,12 @@ def checkTopology():
     topology = request.form.get("TYPE")
     result = None
     if topology == "static":
-        #result = generalConfig(routerA,"YamlConfig/check_topology/check_static.yaml")
-        result = "static"
+        result = generalConfig(routerA, "YamlConfig/check_topology/check_static.yaml")
     elif topology == "rip":
-        result = "rip"
+        result = generalConfig(routerB, "YamlConfig/check_topology/check_rip.yaml")
     elif topology == "ospf":
-        result = "ospf"
+        result = generalConfig(routerA, "YamlConfig/check_topology/check_ospf.yaml")
     return json.dumps(result)
-
 
 
 def generalConfig(ip_address, config_address):
@@ -300,12 +308,57 @@ def generalConfig(ip_address, config_address):
         result = result + data + '\n'
     return result
 
+
 def returnInfo(ip_address):
     telnetClient.login(ip_address, None, "CISCO")
     telnetClient.exec_cmd("enable")
     telnetClient.exec_cmd("CISCO")
-    # telnetClient.exec_cmd("end")
     output = telnetClient.exec_cmd("show ip interface brief").split()
-    # pos = re.search("\s[0-9](\S)+[0-9]\s", output).span()
-    print(output)
     return output
+
+
+# 配置拓扑后返回路由器信息
+def returnList():
+    output_a = returnInfo(routerA)
+    index1_a = output_a.index('Serial0/0/0')
+    index2_a = output_a.index('Serial0/0/1')
+    output_b = returnInfo(routerB)
+    index1_b = output_b.index('Serial0/0/0')
+    index2_b = output_b.index('Serial0/0/1')
+    output_c = returnInfo(routerC)
+    index1_c = output_c.index('Serial0/0/0')
+    index2_c = output_c.index('Serial0/0/1')
+    lis = [{"id": 0,
+            "name": "路由器A",
+            "label": "RTA",
+            "type": "router",
+            "ip": routerA,
+            "S0/0/0": output_a[index1_a + 1],
+            "s0/0/1": output_a[index2_a + 1],
+            "port": "未知",
+            "ignore": "false",
+            "flag": "true"}, {
+               "id": 1,
+               "name": "路由器B",
+               "label": "RTB",
+               "type": "router",
+               "ip": routerB,
+               "S0/0/0": output_b[index1_b + 1],
+               "S0/0/1": output_b[index2_b + 1],
+               "port": "22",
+               "ignore": "true",
+               "flag": "true"
+           }, {
+               "id": 2,
+               "name": "路由器C",
+               "label": "RTC",
+               "type": "router",
+               "ip": routerC,
+               "S0/0/0": output_c[index1_c + 1],
+               "S0/0/1": output_c[index2_c + 1],
+               "port": "33",
+               "ignore": "true",
+               "flag": "true"
+           }]
+    print(lis)
+    return json.dumps(lis)
