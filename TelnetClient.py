@@ -9,7 +9,7 @@ class TelnetClient:
         self.tn.write(cmd.encode('ascii') + b'\n')
 
     def get_output(self):
-        # time.sleep(0.5)
+        time.sleep(0.1)
         return self.tn.read_very_eager().decode('ascii')
 
     def login(self, host_ip, username, password):

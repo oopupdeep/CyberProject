@@ -2,7 +2,7 @@ enable
 CISCO
 configure terminal
 int s0/0/0
-ip address 192.167.2.2 255.255.255.0
+ip address 192.167.2.3 255.255.255.0
 no shutdown
 end
 configure terminal

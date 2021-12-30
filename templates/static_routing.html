@@ -89,10 +89,15 @@
         text-decoration: none;
         cursor: pointer;
     }
+    body
+    {
+        /*background-color: #ade6fa;*/
+        background-image: url("../static/img/back.jpg");
+    }
 </style>
 
-<body>
-    <div class="container-fluid ">
+<body >
+    <div class="container-fluid " >
         <div class="row">
             <div class="col-md-6 column">
 
@@ -277,14 +282,19 @@
     function update(){
         for (var i = 0; i < nodes.length; i++) {
             if (nodes[i].type == 'router') {
+                console.log(nodes[i])
                 nodes[i].image = '../static/img/router.png';
             }
         }
+        console.log('loop')
         data = {
             nodes: nodes,
             edges: edges
         };
+        // console.log('data')
+        console.log(data)
         network.setData(data)
+        console.log('set')
     }
 
     // 获取节点信息
@@ -423,12 +433,16 @@
         $.ajax({
             type: "post",
             url: "/simpleExecuteStaticConfig",
+            dataType:"json",
             success: function(resp) {
                 for (let i = 0; i < 3; i++) {
                     nodes[i] = resp[i]
                 }
+                console.log(resp)
                 update()
                 alert("请求成功！")
+                console.log(resp)
+                console.log(nodes)
                 status = "static"
             },
             error: function(msg) {
@@ -442,6 +456,7 @@
         $.ajax({
             type: "post",
             url: "/simpleExecuteOspfConfig",
+            dataType:"json",
             success: function(resp) {
                 for (let i = 0; i < 3; i++) {
                     nodes[i] = resp[i]
