@@ -1,3 +1,5 @@
 enable
 CISCO
 show ip protocol
+show ip route
+ping 10.0.0.1

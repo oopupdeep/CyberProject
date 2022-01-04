@@ -1,26 +1,14 @@
 enable
 CISCO
 configure terminal
-no router rip
-int s0/0/0
-ip address 192.168.1.1 255.255.255.0
+interface f0/0
+shutdown
+interface s0/0/0
+ip address 100.0.0.1 255.255.255.0
+ip ospf authentication-key liq
 no shutdown
 exit
 router ospf 1
-network 192.168.1.0 0.0.0.255 area 0
-network 172.16.0.0 0.0.255.255 area 1
-exit
-int lo0
-ip address 172.16.1.1 255.255.255.0
-no shutdown
-exit
-int lo1
-ip address 172.16.2.1 255.255.255.0
-no shutdown
-exit
-int lo2
-ip address 172.16.3.1 255.255.255.0
-no shutdown
-exit
-
-
+network 100.0.0.0 0.0.0.255 area 0
+area 0 authentication
+end

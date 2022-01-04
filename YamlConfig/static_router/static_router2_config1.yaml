@@ -3,3 +3,4 @@ CISCO
 configure terminal
 ip route 1.1.1.0 255.255.255.0 s0/0/0
 ip route 3.3.3.0 255.255.255.0 s0/0/1
+end

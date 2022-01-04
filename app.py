@@ -3,7 +3,6 @@ from flask import render_template
 from TelnetClient import TelnetClient
 from flask import request, url_for
 from YamlReader import YamlReader
-import re
 import json
 
 app = Flask(__name__)
@@ -44,48 +43,6 @@ def simpleExecuteRipConfig():
     generalConfig(routerA, "YamlConfig/rip/rip_configA.yaml")
     generalConfig(routerB, "YamlConfig/rip/rip_configB.yaml")
     generalConfig(routerC, "YamlConfig/rip/rip_configC.yaml")
-    # output_a = returnInfo(routerA)
-    # index1_a = output_a.index('Serial0/0/0')
-    # index2_a = output_a.index('Serial0/0/1')
-    # output_b = returnInfo(routerB)
-    # index1_b = output_b.index('Serial0/0/0')
-    # index2_b = output_b.index('Serial0/0/1')
-    # output_c = returnInfo(routerC)
-    # index1_c = output_c.index('Serial0/0/0')
-    # index2_c = output_c.index('Serial0/0/1')
-    # lis = [{"id": 0,
-    #         "name": "路由器A",
-    #         "label": "RTA",
-    #         "type": "router",
-    #         "ip": routerA,
-    #         "S0/0/0": output_a[index1_a+1],
-    #         "s0/0/1": output_a[index2_a+1],
-    #         "port": "未知",
-    #         "ignore": "false",
-    #         "flag": "true"}, {
-    #            "id": 1,
-    #            "name": "路由器B",
-    #            "label": "RTB",
-    #            "type": "router",
-    #            "ip": routerB,
-    #            "S0/0/0": output_b[index1_b+1],
-    #            "S0/0/1": output_b[index2_b+1],
-    #            "port": "22",
-    #            "ignore": "true",
-    #            "flag": "true"
-    #        }, {
-    #            "id": 2,
-    #            "name": "路由器C",
-    #            "label": "RTC",
-    #            "type": "router",
-    #            "ip": routerC,
-    #            "S0/0/0": output_c[index1_c+1],
-    #            "S0/0/1": output_c[index2_c+1],
-    #            "port": "33",
-    #            "ignore": "true",
-    #            "flag": "true"
-    #        }]
-    # return json.dumps(lis)
     return returnList()
 
 
@@ -97,48 +54,6 @@ def simpleExecuteStaticConfig():
     generalConfig(routerA, "YamlConfig/static_router/static_router1_config1.yaml")
     generalConfig(routerB, "YamlConfig/static_router/static_router2_config1.yaml")
     generalConfig(routerC, "YamlConfig/static_router/static_router3_config1.yaml")
-    # output_a = returnInfo(routerA)
-    # index1_a = output_a.index('Serial0/0/0')
-    # index2_a = output_a.index('Serial0/0/1')
-    # output_b = returnInfo(routerB)
-    # index1_b = output_b.index('Serial0/0/0')
-    # index2_b = output_b.index('Serial0/0/1')
-    # output_c = returnInfo(routerC)
-    # index1_c = output_c.index('Serial0/0/0')
-    # index2_c = output_c.index('Serial0/0/1')
-    # lis = [{"id": 0,
-    #         "name": "路由器A",
-    #         "label": "RTA",
-    #         "type": "router",
-    #         "ip": routerA,
-    #         "S0/0/0": output_a[index1_a + 1],
-    #         "s0/0/1": output_a[index2_a + 1],
-    #         "port": "未知",
-    #         "ignore": "false",
-    #         "flag": "true"}, {
-    #            "id": 1,
-    #            "name": "路由器B",
-    #            "label": "RTB",
-    #            "type": "router",
-    #            "ip": routerB,
-    #            "S0/0/0": output_b[index1_b + 1],
-    #            "S0/0/1": output_b[index2_b + 1],
-    #            "port": "22",
-    #            "ignore": "true",
-    #            "flag": "true"
-    #        }, {
-    #            "id": 2,
-    #            "name": "路由器C",
-    #            "label": "RTC",
-    #            "type": "router",
-    #            "ip": routerC,
-    #            "S0/0/0": output_c[index1_c + 1],
-    #            "S0/0/1": output_c[index2_c + 1],
-    #            "port": "33",
-    #            "ignore": "true",
-    #            "flag": "true"
-    #        }]
-    # return json.dumps(lis)
     return returnList()
 
 
@@ -147,48 +62,6 @@ def simpleExecuteOspfConfig():
     generalConfig(routerA, "YamlConfig/ospf/ospf_configA.yaml")
     generalConfig(routerB, "YamlConfig/ospf/ospf_configB.yaml")
     generalConfig(routerC, "YamlConfig/ospf/ospf_configC.yaml")
-    # output_a = returnInfo(routerA)
-    # index1_a = output_a.index('Serial0/0/0')
-    # index2_a = output_a.index('Serial0/0/1')
-    # output_b = returnInfo(routerB)
-    # index1_b = output_b.index('Serial0/0/0')
-    # index2_b = output_b.index('Serial0/0/1')
-    # output_c = returnInfo(routerC)
-    # index1_c = output_c.index('Serial0/0/0')
-    # index2_c = output_c.index('Serial0/0/1')
-    # lis = [{"id": 0,
-    #         "name": "路由器A",
-    #         "label": "RTA",
-    #         "type": "router",
-    #         "ip": routerA,
-    #         "S0/0/0": output_a[index1_a + 1],
-    #         "s0/0/1": output_a[index2_a + 1],
-    #         "port": "未知",
-    #         "ignore": "false",
-    #         "flag": "true"}, {
-    #            "id": 1,
-    #            "name": "路由器B",
-    #            "label": "RTB",
-    #            "type": "router",
-    #            "ip": routerB,
-    #            "S0/0/0": output_b[index1_b + 1],
-    #            "S0/0/1": output_b[index2_b + 1],
-    #            "port": "22",
-    #            "ignore": "true",
-    #            "flag": "true"
-    #        }, {
-    #            "id": 2,
-    #            "name": "路由器C",
-    #            "label": "RTC",
-    #            "type": "router",
-    #            "ip": routerC,
-    #            "S0/0/0": output_c[index1_c + 1],
-    #            "S0/0/1": output_c[index2_c + 1],
-    #            "port": "33",
-    #            "ignore": "true",
-    #            "flag": "true"
-    #        }]
-    # return json.dumps(lis)
     return returnList()
 
 
@@ -202,7 +75,6 @@ def showYaml():
         yaml_file = yamlReader.get_yaml("YamlConfig/rip/{}".format(yaml_file_name))
     elif 'ospf' in yaml_file_name:
         yaml_file = yamlReader.get_yaml("YamlConfig/ospf/{}".format(yaml_file_name))
-    print(json.dumps({"command": yaml_file}))
     return json.dumps({"command": yaml_file})
 
 
@@ -210,7 +82,6 @@ def showYaml():
 def modifyYaml():
     yaml_file = json.loads(request.get_data())["newFile"]
     file_name = json.loads(request.get_data())["option"]
-    # yaml_file = yaml_file.split("\n")
     try:
         file = None
         if "static" in file_name:
@@ -248,40 +119,9 @@ def changeIP():
     elif routerid == "2":
         generalConfig(routerC, "YamlConfig/change_router_ip.yaml")
         routerC = routerip
-    lis = [
-        {
-            "id": 0,
-            "name": "路由器A",
-            "label": "RTA",
-            "type": "router",
-            "ip": routerA,
-            "S0/0/0": "192.168.1.2/24",
-            "port": "未知",
-            "ignore": "false",
-            "flag": "true"},
-        {
-            "id": 1,
-            "name": "路由器B",
-            "label": "RTB",
-            "type": "router",
-            "ip": routerB,
-            "S0/0/0": "192.168.1.2/24",
-            "s0/0/1": "192.168.2.1/24",
-            "port": "22",
-            "ignore": "true",
-            "flag": "true"
-        }, {
-            "id": 2,
-            "name": "路由器C",
-            "label": "RTC",
-            "type": "router",
-            "ip": routerC,
-            "S0/0/0": "192.168.2.2/24",
-            "port": "33",
-            "ignore": "true",
-            "flag": "true"
-        }]
-    return json.dumps(lis)
+    print(routerid)
+    print(routerip)
+    return returnList()
 
 
 # 根据topology的值执行对应的验证脚本并将结果返回到前端
@@ -360,5 +200,4 @@ def returnList():
                "ignore": "true",
                "flag": "true"
            }]
-    print(lis)
     return json.dumps(lis)
