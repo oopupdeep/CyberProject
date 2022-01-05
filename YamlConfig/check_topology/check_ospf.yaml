@@ -1,3 +1,4 @@
 enable
 CISCO
-show ip protocol
+terminal length 0
+show ip ospf database

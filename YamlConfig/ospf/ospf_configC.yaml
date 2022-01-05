@@ -1,15 +1,11 @@
 enable
 CISCO
 configure terminal
-interface f0/0
-shutdown
+no router rip
 interface s0/0/0
 no shutdown
 ip address 100.0.1.2 255.255.255.0
-ip ospf authentication message-digest
-ip ospf message-digest-key 1 md5 123456
 exit
 router ospf 1
 network 100.0.1.0 0.0.0.255 area 1
-area 1 authentication message-digest
 end

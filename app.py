@@ -134,7 +134,7 @@ def checkTopology():
     elif topology == "rip":
         result = generalConfig(routerB, "YamlConfig/check_topology/check_rip.yaml")
     elif topology == "ospf":
-        result = generalConfig(routerA, "YamlConfig/check_topology/check_ospf.yaml")
+        result = generalConfig(routerB, "YamlConfig/check_topology/check_ospf.yaml")
     return json.dumps(result)
 
 

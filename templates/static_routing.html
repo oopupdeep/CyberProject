@@ -330,7 +330,7 @@
         if (deviceType == "router") {
             var $ul = "<ul>" +
                 "<li><img src=' " + imgPathSrc + " ' width='30px' height='25px'><span> " + hoveNodeList.name + " </span> </li>" +
-                "<li onclick='changeIP("+hoveNodeList.id+")'>IP：" + hoveNodeList.ip + "</li>" +
+                "<li onclick='changeIP(" + hoveNodeList.id + ")'>IP：" + hoveNodeList.ip + "</li>" +
                 "<li>S0/0/0：" + hoveNodeList["S0/0/0"] + "</li>" +
                 "<li>S0/0/1：" + hoveNodeList["S0/0/1"] + "</li>" +
                 "<li>Port：" + hoveNodeList.port + "</li>" +
@@ -574,7 +574,6 @@
 
     // 打开弹窗
     function show_modal() {
-        //document.getElementById("checked").value = "567756785678 \n 87896787 \n s97898";
         modal.style.display = "block";
     }
 
